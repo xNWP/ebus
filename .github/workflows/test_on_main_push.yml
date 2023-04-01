@@ -1,0 +1,23 @@
+name: Test on Main Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-crate:
+    name: Test Crate
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Install Stable Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo test
+      - run: cargo test --release
