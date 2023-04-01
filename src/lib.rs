@@ -104,7 +104,6 @@ pub struct EventPublisher<T> {
 }
 
 unsafe impl<T> Send for EventPublisher<T> {}
-unsafe impl<T> Sync for EventPublisher<T> {}
 
 impl<T> EventPublisher<T> {
     fn _new(_bus: Arc<EventBusCore<T>>, _debug_name: String) -> Self {
@@ -132,7 +131,6 @@ pub struct EventSubscriber<T> {
 }
 
 unsafe impl<T> Send for EventSubscriber<T> {}
-unsafe impl<T> Sync for EventSubscriber<T> {}
 
 impl<T> EventSubscriber<T> {
     fn _new(bus: Arc<EventBusCore<T>>, debug_name: String, buff_size: usize) -> Self {

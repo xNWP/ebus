@@ -60,7 +60,7 @@ fn event_bus_send_sync() {
 }
 
 #[test]
-fn subscriber_send_sync() {
+fn subscriber_send() {
     let _ = env_logger::try_init();
     let bus = EventBus::<u32>::new("bus");
     let send_sub = bus.join_as_subscriber("sub", 10);
@@ -68,29 +68,15 @@ fn subscriber_send_sync() {
         let _send = send_sub;
     });
     jh.join().unwrap();
-
-    let send_sub_arc = Arc::new(bus.join_as_subscriber("sub_arc", 10));
-    let send_sub_arc_2 = send_sub_arc.clone();
-    let jh = std::thread::spawn(move || {
-        let _send = send_sub_arc_2;
-    });
-    jh.join().unwrap();
 }
 
 #[test]
-fn publisher_send_sync() {
+fn publisher_send() {
     let _ = env_logger::try_init();
     let bus = EventBus::<u32>::new("bus");
     let send_pub = bus.join_as_publisher("pub");
     let jh = std::thread::spawn(move || {
         let _send = send_pub;
-    });
-    jh.join().unwrap();
-
-    let send_pub_arc = Arc::new(bus.join_as_subscriber("pub_arc", 10));
-    let send_pub_arc_2 = send_pub_arc.clone();
-    let jh = std::thread::spawn(move || {
-        let _send = send_pub_arc_2;
     });
     jh.join().unwrap();
 }
@@ -157,7 +143,7 @@ fn many_async_messages() {
             it += 1;
             continue;
         }
-        
+
         if !sub.is_bus_alive() {
             break;
         }
